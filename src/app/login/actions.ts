@@ -16,7 +16,7 @@ export async function login(formData: FormData) {
     const { error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
-        redirect('/login?error=Could not authenticate user')
+        redirect(`/login?error=${encodeURIComponent(error.message)}`)
     }
 
     revalidatePath('/', 'layout')
@@ -54,7 +54,7 @@ export async function signup(formData: FormData) {
 
             if (adminError) {
                 console.error('Supabase Admin Sign Up Error:', adminError)
-                redirect('/login?error=Could not authenticate user')
+                redirect(`/login?error=${encodeURIComponent(adminError.message)}`)
             }
 
             // The user is created, but we need a session on the client. Sign them in.
@@ -62,11 +62,11 @@ export async function signup(formData: FormData) {
 
             if (signInError) {
                 console.error('Sign In via Admin Creation Error:', signInError)
-                redirect('/login?error=Could not authenticate user')
+                redirect(`/login?error=${encodeURIComponent(signInError.message)}`)
             }
         } else {
             console.error('Supabase Sign Up Error:', error)
-            redirect('/login?error=Could not authenticate user')
+            redirect(`/login?error=${encodeURIComponent(error.message)}`)
         }
     }
 
