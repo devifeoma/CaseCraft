@@ -1,7 +1,30 @@
 'use client'
 
 import { useState } from 'react'
+import { useFormStatus } from 'react-dom'
+import { Loader2 } from 'lucide-react'
 import { login, signup } from './actions'
+
+function SubmitButton({ isSignUp }: { isSignUp: boolean }) {
+    const { pending } = useFormStatus()
+
+    return (
+        <button
+            formAction={isSignUp ? signup : login}
+            disabled={pending}
+            className="flex w-full items-center justify-center rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-purple-500 shadow-lg shadow-purple-500/20 disabled:opacity-50 disabled:pointer-events-none"
+        >
+            {pending ? (
+                <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {isSignUp ? 'Creating account...' : 'Signing in...'}
+                </>
+            ) : (
+                isSignUp ? 'Create account' : 'Sign in'
+            )}
+        </button>
+    )
+}
 
 export function LoginForm({ error }: { error?: string }) {
     const [isSignUp, setIsSignUp] = useState(false)
@@ -46,12 +69,7 @@ export function LoginForm({ error }: { error?: string }) {
                 </div>
 
                 <div className="mt-4 flex flex-col gap-3">
-                    <button
-                        formAction={isSignUp ? signup : login}
-                        className="flex w-full items-center justify-center rounded-xl bg-purple-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-purple-500 shadow-lg shadow-purple-500/20"
-                    >
-                        {isSignUp ? 'Create account' : 'Sign in'}
-                    </button>
+                    <SubmitButton isSignUp={isSignUp} />
 
                     <button
                         type="button"
