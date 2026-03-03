@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { LayoutDashboard, LogOut, Settings, Plus } from 'lucide-react'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { DashboardNav } from './nav'
 
 export default async function DashboardLayout({
     children,
@@ -25,22 +26,7 @@ export default async function DashboardLayout({
                     <span className="font-semibold tracking-tight text-zinc-900 dark:text-white">CaseCraft</span>
                 </Link>
 
-                <nav className="flex flex-1 flex-col gap-2">
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-3 rounded-lg bg-zinc-100 px-3 py-2 text-sm font-medium text-zinc-900 transition-colors dark:bg-white/10 dark:text-white"
-                    >
-                        <LayoutDashboard className="h-4 w-4" />
-                        Projects
-                    </Link>
-                    <Link
-                        href="/dashboard/settings"
-                        className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-colors dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white"
-                    >
-                        <Settings className="h-4 w-4" />
-                        Settings
-                    </Link>
-                </nav>
+                <DashboardNav />
 
                 <div className="mt-auto flex flex-col gap-4 border-t border-zinc-200 dark:border-white/5 pt-4 text-sm">
                     <div className="flex flex-col gap-1">
