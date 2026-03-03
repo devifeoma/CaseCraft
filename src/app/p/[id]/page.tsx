@@ -11,15 +11,15 @@ export default async function PublicProjectPage({
 
     // Simulated case study data
     return (
-        <div className="min-h-screen bg-[#030303] text-zinc-100 selection:bg-purple-500/30">
+        <div className="min-h-screen bg-background text-foreground selection:bg-purple-500/30">
             <main className="mx-auto max-w-3xl px-6 py-24 sm:py-32">
                 <div className="mb-16">
-                    <h1 className="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl">Redesigning Checkout</h1>
-                    <p className="text-xl text-zinc-400">A UX Case Study by CaseCraft User</p>
+                    <h1 className="mb-4 text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-5xl">Redesigning Checkout</h1>
+                    <p className="text-xl text-zinc-600 dark:text-zinc-400">A UX Case Study by CaseCraft User</p>
                 </div>
 
                 {/* Narrative Block */}
-                <section className="prose prose-invert prose-p:leading-relaxed prose-headings:font-semibold max-w-none text-zinc-300">
+                <section className="prose dark:prose-invert prose-p:leading-relaxed prose-headings:font-semibold max-w-none text-zinc-700 dark:text-zinc-300">
                     <h2>The Challenge</h2>
                     <p>
                         The primary goal was to modernize the legacy checkout system to reduce cart abandonment.
@@ -42,8 +42,8 @@ export default async function PublicProjectPage({
                         To tackle this, we initiated a comprehensive review of the user journey. By focusing on the critical path, we designed a streamlined flow that abstracted the underlying complexity away from the user. We relied heavily on progressive disclosure and contextual cues.
                     </p>
 
-                    <div className="my-12 flex h-64 w-full items-center justify-center rounded-2xl bg-white/5 border border-white/10">
-                        <span className="text-sm font-medium text-zinc-500">Figma Image: Final UI Flow</span>
+                    <div className="my-12 flex h-64 w-full items-center justify-center rounded-2xl bg-black/5 dark:bg-white/5 border border-zinc-200 dark:border-white/10">
+                        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Figma Image: Final UI Flow</span>
                     </div>
 
                     <h2>The Outcome</h2>
@@ -59,9 +59,9 @@ export default async function PublicProjectPage({
                 </div>
 
                 {/* Footer / Watermark */}
-                <footer className="mt-32 flex items-center justify-between border-t border-white/10 pt-8 text-sm text-zinc-500">
+                <footer className="mt-32 flex items-center justify-between border-t border-zinc-200 dark:border-white/10 pt-8 text-sm text-zinc-500 dark:text-zinc-400">
                     <span>© 2026 Author Name</span>
-                    <a href="/" className="flex items-center gap-2 hover:text-white transition-colors">
+                    <a href="/" className="flex items-center gap-2 hover:text-zinc-900 dark:hover:text-white transition-colors">
                         <div className="h-4 w-4 rounded-sm bg-purple-500"></div>
                         Powered by CaseCraft
                     </a>

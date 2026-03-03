@@ -29,9 +29,9 @@ export default function NewProjectPage() {
     }
 
     return (
-        <div className="flex min-h-screen w-full flex-col bg-[#030303] text-zinc-100 selection:bg-purple-500/30">
-            <header className="flex h-16 items-center border-b border-white/5 bg-black/50 px-6 backdrop-blur-md">
-                <Link href="/dashboard" className="flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+        <div className="flex min-h-screen w-full flex-col bg-background text-foreground selection:bg-purple-500/30">
+            <header className="flex h-16 items-center border-b border-zinc-200 dark:border-white/5 bg-white/50 dark:bg-black/50 px-6 backdrop-blur-md">
+                <Link href="/dashboard" className="flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
                     <ArrowLeft className="h-4 w-4" />
                     Back to Dashboard
                 </Link>
@@ -40,13 +40,13 @@ export default function NewProjectPage() {
             <main className="flex flex-1 items-center justify-center p-6">
                 <div className="w-full max-w-xl">
                     <div className="mb-8 text-center">
-                        <h1 className="text-3xl font-semibold tracking-tight text-white mb-3">Create New Case Study</h1>
-                        <p className="text-zinc-400">Paste your Figma link and our agent will extract your designs and structure your story.</p>
+                        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white mb-3">Create New Case Study</h1>
+                        <p className="text-zinc-600 dark:text-zinc-400">Paste your Figma link and our agent will extract your designs and structure your story.</p>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-lg sm:p-8">
+                    <form onSubmit={handleSubmit} className="rounded-2xl border border-zinc-200 dark:border-white/5 bg-black/5 dark:bg-white/5 p-6 backdrop-blur-lg sm:p-8">
                         <div className="mb-6 flex flex-col gap-2">
-                            <label htmlFor="figma-url" className="text-sm font-medium text-zinc-300">
+                            <label htmlFor="figma-url" className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                                 Figma File URL
                             </label>
                             <div className="relative flex items-center">
@@ -54,7 +54,7 @@ export default function NewProjectPage() {
                                 <input
                                     id="figma-url"
                                     type="url"
-                                    className="w-full rounded-xl border border-white/10 bg-black/50 py-3 pl-10 pr-4 text-sm text-white outline-none transition-all placeholder:text-zinc-600 focus:border-purple-500/50 focus:bg-black"
+                                    className="w-full rounded-xl border border-zinc-200 dark:border-white/10 bg-white/50 dark:bg-black/50 py-3 pl-10 pr-4 text-sm text-zinc-900 dark:text-white outline-none transition-all placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-purple-500/50 focus:bg-white dark:focus:bg-black"
                                     placeholder="https://www.figma.com/file/..."
                                     value={url}
                                     onChange={(e) => setUrl(e.target.value)}
@@ -64,7 +64,7 @@ export default function NewProjectPage() {
                         </div>
 
                         <div className="mb-8 flex flex-col gap-2">
-                            <label className="text-sm font-medium text-zinc-300">
+                            <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
                                 Aesthetic Vibe
                             </label>
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -74,8 +74,8 @@ export default function NewProjectPage() {
                                         type="button"
                                         onClick={() => setVibe(v)}
                                         className={`rounded-xl border py-2.5 text-xs font-medium capitalize transition-all ${vibe === v
-                                                ? 'border-purple-500 bg-purple-500/10 text-purple-300'
-                                                : 'border-white/10 bg-black/30 text-zinc-400 hover:border-white/20 hover:text-zinc-200'
+                                            ? 'border-purple-500 bg-purple-500/10 text-purple-700 dark:text-purple-300'
+                                            : 'border-zinc-200 dark:border-white/10 bg-black/5 dark:bg-black/30 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-white/20 hover:text-zinc-900 dark:hover:text-zinc-200'
                                             }`}
                                     >
                                         {v}
