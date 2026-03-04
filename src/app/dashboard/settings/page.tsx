@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { CheckCircle2, User, CreditCard, Sparkles } from 'lucide-react'
+import { ProfileForm } from './profile-form'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -9,6 +10,12 @@ export default async function SettingsPage() {
     if (error || !user) {
         redirect('/login')
     }
+
+    const { data: profile } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single()
 
     return (
         <div className="mx-auto max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -30,9 +37,12 @@ export default async function SettingsPage() {
                 <div className="col-span-12 sm:col-span-9 flex flex-col gap-8">
                     {/* Profile Section */}
                     <section className="rounded-2xl border border-zinc-200 dark:border-white/5 bg-white dark:bg-white/5 p-6 shadow-sm backdrop-blur-xl">
-                        <h2 className="text-lg font-semibold text-zinc-900 dark:text-white mb-4">Profile Information</h2>
+                        <div className="flex flex-col mb-6">
+                            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Profile Information</h2>
+                            <p className="text-sm text-zinc-600 dark:text-zinc-400">Update your account profile details and public avatar.</p>
+                        </div>
 
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-8">
                             <div>
                                 <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">Email Address</label>
                                 <input
@@ -41,8 +51,12 @@ export default async function SettingsPage() {
                                     value={user.email || ''}
                                     className="w-full max-w-md rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 px-4 py-2.5 text-sm text-zinc-500 dark:text-zinc-500 cursor-not-allowed outline-none transition-all"
                                 />
-                                <p className="mt-2 text-xs text-zinc-500">Your email address is managed through your authentication provider.</p>
+                                <p className="mt-2 text-xs text-zinc-500">Your email address is currently managed through your authentication provider.</p>
                             </div>
+
+                            <hr className="border-zinc-200 dark:border-white/10" />
+
+                            <ProfileForm initialData={profile} />
                         </div>
                     </section>
 

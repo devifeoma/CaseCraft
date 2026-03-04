@@ -5,7 +5,10 @@ create extension if not exists "uuid-ossp";
 create table public.profiles (
   id uuid references auth.users on delete cascade not null primary key,
   email text not null,
-  full_name text,
+  first_name text,
+  last_name text,
+  location text,
+  job_title text,
   avatar_url text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
