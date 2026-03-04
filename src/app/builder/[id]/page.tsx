@@ -162,7 +162,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     if (step !== 'done') {
         return (
             <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground p-6 transition-colors duration-300 relative">
-                <Link href="/" className="absolute top-6 left-6 flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Link href="/dashboard" className="absolute top-6 left-6 flex items-center gap-3 hover:opacity-80 transition-opacity">
                     <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 shadow-lg shadow-brand-500/20">
                         <Sparkles className="h-4 w-4 text-white" />
                         <div className="absolute inset-0 rounded-lg ring-1 ring-white/20"></div>
@@ -280,10 +280,13 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
             {/* Topbar */}
             <header className="fixed left-0 right-0 top-0 z-50 flex h-14 items-center justify-between border-b border-zinc-200 bg-white/80 px-4 backdrop-blur-md dark:border-white/5 dark:bg-black/80">
                 <div className="flex items-center gap-4">
-                    <Link href="/dashboard" className="text-zinc-500 hover:text-zinc-900 border-r border-zinc-200 pr-4 dark:border-white/10 dark:text-zinc-400 dark:hover:text-white">
-                        <ArrowLeft className="h-4 w-4" />
+                    <Link href="/dashboard" className="flex items-center gap-2 pr-4 border-r border-zinc-200 dark:border-white/10 hover:opacity-80 transition-opacity">
+                        <div className="relative flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-brand-500 to-indigo-600 shadow-sm">
+                            <Sparkles className="h-3 w-3 text-white" />
+                        </div>
+                        <span className="font-semibold tracking-tight text-zinc-900 dark:text-white hidden sm:block">CaseCraft</span>
                     </Link>
-                    <span className="text-sm font-medium text-zinc-900 dark:text-white">Project: {projectId} / Draft</span>
+                    <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">Project: {projectId}</span>
                 </div>
                 <div className="flex items-center gap-3">
                     <button onClick={handleSave} disabled={isSaving} className="text-xs font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-1 min-w-[60px] justify-center">
