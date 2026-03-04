@@ -7,8 +7,10 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  --color-brand-500: #ec4899; /* Vibrant Pink */
-  --color-brand-600: #db2777; /* Deep Pink */
+  --color-brand-500: #3b82f6;
+  /* Blue 500 */
+  --color-brand-600: #2563eb;
+  /* Blue 600 */
 
   --animate-fade-in: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-float: float 6s ease-in-out infinite;
@@ -72,12 +74,12 @@ body {
 }
 
 .brand-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-400;
 }
 
 .btn-primary {
-  @apply relative overflow-hidden rounded-full bg-gradient-to-r from-pink-600 to-purple-600 px-8 py-3 text-sm font-medium text-white transition-all hover:scale-105 hover:shadow-lg;
-  box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+  @apply relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 text-sm font-medium text-white transition-all hover:scale-105 hover:shadow-lg;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
 }
 
 .btn-primary:hover {
