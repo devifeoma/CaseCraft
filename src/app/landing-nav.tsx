@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Menu, X, User, LogOut } from 'lucide-react';
+import { ArrowRight, Sparkles, Menu, X, User, LogOut, Settings } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useState } from 'react';
 
@@ -61,6 +61,22 @@ export function LandingNav({ userEmail }: { userEmail?: string | null }) {
                                                 className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white transition-colors"
                                             >
                                                 <User className="h-4 w-4 text-zinc-400" /> Dashboard
+                                            </Link>
+                                            <Link
+                                                href="/dashboard/settings"
+                                                onClick={() => setIsProfileDropdownOpen(false)}
+                                                className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white transition-colors"
+                                            >
+                                                <Settings className="h-4 w-4 text-zinc-400" /> Settings
+                                            </Link>
+                                            <div className="my-1 border-t border-zinc-100 dark:border-white/5"></div>
+                                            <Link
+                                                href="/dashboard/settings"
+                                                onClick={() => setIsProfileDropdownOpen(false)}
+                                                className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 hover:text-brand-700 dark:text-brand-400 dark:hover:bg-brand-500/10 dark:hover:text-brand-300 transition-colors"
+                                            >
+                                                <span className="flex items-center gap-2"><Sparkles className="h-4 w-4" /> Upgrade to Pro</span>
+                                                <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
                                             </Link>
                                             <form action="/auth/signout" method="post" className="w-full">
                                                 <button
