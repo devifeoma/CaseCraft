@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link';
 import { ArrowRight, Figma, Sparkles, Layers, ShieldCheck, Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
