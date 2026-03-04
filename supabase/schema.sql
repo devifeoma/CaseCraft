@@ -33,6 +33,7 @@ create table public.projects (
   figma_url text,
   vibe text default 'minimal',
   is_published boolean default false,
+  password_hash text,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );

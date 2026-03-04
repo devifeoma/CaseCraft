@@ -2,6 +2,7 @@
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import bcrypt from 'bcryptjs'
 
 // Helper to create server client inside actions
 async function getSupabase() {
@@ -37,7 +38,7 @@ export async function generateCaseStudyCopy(goal: string, constraints: string, o
   //   model: 'gpt-4o',
   //   messages: [{
   //     role: 'system', 
-  //     content: `You are an expert UX copywriter framing a case study. Given the core Goal: ${goal}, Constraints: ${constraints}, and Outcome: ${outcome}, generate a professional 300-word introduction section outlining the problem and proposed solution.`
+  //     content: `You are an expert UX copywriter framing a case study.Given the core Goal: ${ goal }, Constraints: ${ constraints }, and Outcome: ${ outcome }, generate a professional 300 - word introduction section outlining the problem and proposed solution.`
   //   }]
   // })
 
@@ -47,17 +48,17 @@ export async function generateCaseStudyCopy(goal: string, constraints: string, o
   // 3. Fake Response:
   const generatedCopy = `
 ## The Challenge
-The primary goal was to **${goal.toLowerCase()}**. However, we were faced with several significant limitations, chiefly: ${constraints}. 
+The primary goal was to ** ${goal.toLowerCase()}**.However, we were faced with several significant limitations, chiefly: ${constraints}. 
 
 This meant the standard approaches wouldn't work. We had to rethink the core interaction paradigm to ensure a seamless experience that balanced both usability and technical guardrails.
 
 ## Our Approach
-To tackle this, we initiated a comprehensive review of the user journey. By focusing on the critical path, we designed a streamlined flow that abstracted the underlying complexity away from the user. We relied heavily on progressive disclosure and contextual cues.
+To tackle this, we initiated a comprehensive review of the user journey.By focusing on the critical path, we designed a streamlined flow that abstracted the underlying complexity away from the user.We relied heavily on progressive disclosure and contextual cues.
 
 The result was a robust system that not only met the constraints but also elevated the overall aesthetic—lean, functional, and highly polished.
 
 ## The Outcome
-Ultimately, the project was a resounding success. **${outcome}**. This validated our hypothesis that a constraint-driven design approach often yields the most innovative, user-centric solutions.
+Ultimately, the project was a resounding success. ** ${outcome}**.This validated our hypothesis that a constraint - driven design approach often yields the most innovative, user - centric solutions.
   `.trim()
 
   return { copy: generatedCopy }
@@ -104,7 +105,7 @@ export async function saveProjectSections(projectId: string, sections: any[]) {
   return { success: true }
 }
 
-export async function publishProject(projectId: string) {
+export async function publishProject(projectId: string, password?: string) {
   // Bypass DB operation for demo routes
   if (projectId.includes('demo') || projectId.includes('mock')) return { success: true }
 
@@ -112,9 +113,31 @@ export async function publishProject(projectId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error("Not authenticated")
 
+  let passwordHash = null
+
+  if (password && password.trim() !== '') {
+    // Check if user is Pro
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('tier')
+      .eq('user_id', user.id)
+      .single()
+
+    if (subscription?.tier !== 'pro') {
+      throw new Error("Password protection is a Pro feature. Please upgrade your account.")
+    }
+
+    // Hash the password securely
+    const salt = await bcrypt.genSalt(10)
+    passwordHash = await bcrypt.hash(password, salt)
+  }
+
   const { error } = await supabase
     .from('projects')
-    .update({ is_published: true })
+    .update({
+      is_published: true,
+      password_hash: passwordHash
+    })
     .eq('id', projectId)
     .eq('user_id', user.id)
 
@@ -123,4 +146,18 @@ export async function publishProject(projectId: string) {
   }
 
   return { success: true }
+}
+
+export async function checkIsPro() {
+  const supabase = await getSupabase()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return false
+
+  const { data: subscription } = await supabase
+    .from('subscriptions')
+    .select('tier')
+    .eq('user_id', user.id)
+    .single()
+
+  return subscription?.tier === 'pro'
 }

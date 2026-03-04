@@ -1,6 +1,10 @@
 import { BarChartCard } from '@/components/EvidenceVault/BarChartCard'
 import { ProgressRingCard } from '@/components/EvidenceVault/ProgressRingCard'
 import { TestimonialCard } from '@/components/EvidenceVault/TestimonialCard'
+import { createClient } from '@/utils/supabase/server'
+import { cookies } from 'next/headers'
+import { PasswordChallenge } from './password-challenge'
+import { notFound } from 'next/navigation'
 
 export default async function PublicProjectPage({
     params,
@@ -8,8 +12,37 @@ export default async function PublicProjectPage({
     params: Promise<{ id: string }>
 }) {
     const resolvedParams = await params
+    const projectId = resolvedParams.id
 
-    // Simulated case study data
+    // Bypass DB check for hardcoded demo routes if any exist, otherwise check DB
+    if (!projectId.includes('demo') && !projectId.includes('mock')) {
+        const supabase = await createClient()
+        const { data: project } = await supabase
+            .from('projects')
+            .select('password_hash, is_published')
+            .eq('id', projectId)
+            .single()
+
+        if (!project || !project.is_published) {
+            return (
+                <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-black">
+                    <p className="text-zinc-500">This project is not public or does not exist.</p>
+                </div>
+            )
+        }
+
+        // Check password protection
+        if (project.password_hash) {
+            const cookieStore = await cookies()
+            const isUnlocked = cookieStore.get(`casecraft_unlocked_${projectId}`)
+
+            if (!isUnlocked) {
+                return <PasswordChallenge projectId={projectId} />
+            }
+        }
+    }
+
+    // Simulated case study data (or real data if hooked up later)
     return (
         <div className="min-h-screen bg-background text-foreground selection:bg-purple-500/30">
             <main className="mx-auto max-w-3xl px-6 py-24 sm:py-32">

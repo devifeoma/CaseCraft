@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, use } from 'react'
+import { useState, use, useEffect } from 'react'
 import { Sparkles, ArrowRight, CheckCircle2, ChevronRight, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { PublishModal } from './publish-modal'
 import { generateCaseStudyCopy } from './actions'
 import {
     DndContext,
@@ -21,7 +22,7 @@ import {
     useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { saveProjectSections, publishProject } from './actions'
+import { saveProjectSections, publishProject, checkIsPro } from './actions'
 
 type WizardStep = 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
 
@@ -83,6 +84,16 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const [sections, setSections] = useState<any[]>([])
     const [isSaving, setIsSaving] = useState(false)
     const [isPublishing, setIsPublishing] = useState(false)
+    const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
+    const [isPro, setIsPro] = useState(false)
+
+    useEffect(() => {
+        const checkTier = async () => {
+            const hasPro = await checkIsPro()
+            setIsPro(hasPro)
+        }
+        checkTier()
+    }, [])
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -145,16 +156,20 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
         setIsSaving(false)
     }
 
-    const handlePublish = async () => {
+    const handlePublishClick = () => {
+        setIsPublishModalOpen(true)
+    }
+
+    const handleConfirmPublish = async (password?: string) => {
         setIsPublishing(true)
         try {
             await saveProjectSections(projectId, sections) // save latest
-            await publishProject(projectId)
+            await publishProject(projectId, password)
             window.location.href = `/dashboard`
-        } catch (e) {
+        } catch (e: any) {
             console.error(e)
-            alert("Failed to publish.")
             setIsPublishing(false)
+            alert(e.message || "Failed to publish project.")
         }
     }
 
@@ -292,7 +307,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                     <button onClick={handleSave} disabled={isSaving} className="text-xs font-medium text-zinc-400 hover:text-white transition-colors flex items-center gap-1 min-w-[60px] justify-center">
                         {isSaving ? <span className="animate-pulse">Saving...</span> : <><CheckCircle2 className="h-3 w-3" /> Save</>}
                     </button>
-                    <button onClick={handlePublish} disabled={isPublishing} className="rounded-md bg-white px-4 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-50">
+                    <button onClick={handlePublishClick} disabled={isPublishing} className="rounded-md bg-white px-4 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-50">
                         {isPublishing ? "Publishing..." : "Publish"}
                     </button>
                 </div>
@@ -398,6 +413,15 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                     )}
                 </div>
             </main>
+
+            <PublishModal
+                isOpen={isPublishModalOpen}
+                onClose={() => setIsPublishModalOpen(false)}
+                onPublish={handleConfirmPublish}
+                isPublishing={isPublishing}
+                isPro={isPro}
+                projectId={projectId}
+            />
         </div>
     )
 }
