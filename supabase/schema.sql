@@ -67,3 +67,20 @@ create policy "Users can delete their own projects." on public.projects for dele
 
 -- Anyone can view published projects
 create policy "Anyone can view published projects." on public.projects for select using (is_published = true);
+
+-- Sections Policies
+create policy "Users can view their project sections." on public.sections for select using (
+  exists (select 1 from public.projects where id = sections.project_id and user_id = auth.uid())
+);
+create policy "Users can insert their project sections." on public.sections for insert with check (
+  exists (select 1 from public.projects where id = sections.project_id and user_id = auth.uid())
+);
+create policy "Users can update their project sections." on public.sections for update using (
+  exists (select 1 from public.projects where id = sections.project_id and user_id = auth.uid())
+);
+create policy "Users can delete their project sections." on public.sections for delete using (
+  exists (select 1 from public.projects where id = sections.project_id and user_id = auth.uid())
+);
+create policy "Anyone can view sections of published projects." on public.sections for select using (
+  exists (select 1 from public.projects where id = sections.project_id and is_published = true)
+);

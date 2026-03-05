@@ -52,8 +52,8 @@ export default async function PublicProjectPage({
                 </div>
 
                 {/* Narrative Block */}
-                <section className="prose dark:prose-invert prose-p:leading-relaxed prose-headings:font-semibold max-w-none text-zinc-700 dark:text-zinc-300">
-                    <h2>The Challenge</h2>
+                <section className="prose dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold max-w-none text-zinc-700 dark:text-zinc-300">
+                    <h1>The Challenge</h1>
                     <p>
                         The primary goal was to modernize the legacy checkout system to reduce cart abandonment.
                         However, we were faced with several significant limitations, chiefly an outdated internal payment API that we couldn't replace.
@@ -70,7 +70,7 @@ export default async function PublicProjectPage({
                         />
                     </div>
 
-                    <h2>Our Approach</h2>
+                    <h1>Our Approach</h1>
                     <p>
                         To tackle this, we initiated a comprehensive review of the user journey. By focusing on the critical path, we designed a streamlined flow that abstracted the underlying complexity away from the user. We relied heavily on progressive disclosure and contextual cues.
                     </p>
@@ -79,7 +79,7 @@ export default async function PublicProjectPage({
                         <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">Figma Image: Final UI Flow</span>
                     </div>
 
-                    <h2>The Outcome</h2>
+                    <h1>The Outcome</h1>
                     <p>
                         Ultimately, the project was a resounding success. Conversion increased by 14% and support tickets dropped by half. This validated our hypothesis that a constraint-driven design approach often yields the most innovative, user-centric solutions.
                     </p>

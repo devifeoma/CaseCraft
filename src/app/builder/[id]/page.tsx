@@ -69,6 +69,51 @@ function SortableItem({ id, children, onRemove }: { id: string, children: React.
     )
 }
 
+function EditableMarkdown({ initialValue, onChange }: { initialValue: string, onChange: (val: string) => void }) {
+    const [isEditing, setIsEditing] = useState(false)
+    const [value, setValue] = useState(initialValue)
+
+    useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+
+    const handleBlur = () => {
+        setIsEditing(false)
+        onChange(value)
+    }
+
+    if (isEditing) {
+        return (
+            <div className="flex flex-col gap-2">
+                <textarea
+                    autoFocus
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    onBlur={handleBlur}
+                    className="w-full min-h-[300px] resize-y bg-transparent text-zinc-700 dark:text-zinc-300 outline-none border-none p-0 focus:ring-0 leading-relaxed md:text-md"
+                    placeholder="Start typing your case study text here (Markdown supported)..."
+                />
+                <div className="flex justify-end">
+                    <button
+                        onMouseDown={(e) => { e.preventDefault(); handleBlur(); }}
+                        className="rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition"
+                    >
+                        Done
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    return (
+        <div
+            onClick={() => setIsEditing(true)}
+            className="prose max-w-none prose-headings:font-medium text-zinc-700 dark:prose-invert dark:text-zinc-300 cursor-text hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors min-h-[200px] -m-2 p-2 ring-1 ring-transparent hover:ring-zinc-200 dark:hover:ring-white/10"
+            dangerouslySetInnerHTML={{ __html: value ? value.replace(/\n\n/g, '<br/><br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^# (.*$)/gim, '<h1 class="font-bold text-2xl mt-4 mb-2">$1</h1>') : '<span class="text-zinc-400">Click to add text...</span>' }}
+        />
+    )
+}
+
 export default function BuilderPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params)
     const projectId = resolvedParams.id
@@ -132,6 +177,10 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
 
     const removeSection = (idToRemove: string) => {
         setSections(sections.filter(s => s.id !== idToRemove))
+    }
+
+    const updateSection = (idToUpdate: string, newContent: any) => {
+        setSections(sections.map(s => s.id === idToUpdate ? { ...s, content: newContent } : s))
     }
 
     const handleDragEnd = (event: DragEndEvent) => {
@@ -367,9 +416,9 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                     <SortableItem key={section.id} id={section.id} onRemove={() => removeSection(section.id)}>
                                         <div className="rounded-2xl border border-white/5 bg-white/5 p-6 hover:border-white/10 transition-colors">
                                             {section.type === 'ai_text' && (
-                                                <div
-                                                    className="prose max-w-none prose-headings:font-medium text-zinc-700 dark:prose-invert dark:text-zinc-300"
-                                                    dangerouslySetInnerHTML={{ __html: section.content.text.replace(/\n\n/g, '<br/><br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+                                                <EditableMarkdown
+                                                    initialValue={section.content.text || ''}
+                                                    onChange={(newText) => updateSection(section.id, { ...section.content, text: newText })}
                                                 />
                                             )}
                                             {section.type === 'figma_image' && (

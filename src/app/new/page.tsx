@@ -18,13 +18,10 @@ export default function NewProjectPage() {
 
         try {
             await extractFigmaData(url, vibe)
-        } catch (error) {
+        } catch (error: any) {
             console.error(error)
-            // Fallback redirect for local testing if DB throws (e.g., missing auth/schema)
-            setTimeout(() => {
-                setIsLoading(false)
-                router.push('/builder/mock')
-            }, 1500)
+            setIsLoading(false)
+            alert(error?.message || 'Failed to create project. Please try again.')
         }
     }
 
