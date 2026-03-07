@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## About Project
+
+CaseCraft is an AI powered platform that allows you to create and share case studies.
+
+
 ## Getting Started
 
 First, run the development server:

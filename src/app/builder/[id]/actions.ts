@@ -161,3 +161,37 @@ export async function checkIsPro() {
 
   return subscription?.tier === 'pro'
 }
+
+export async function uploadProjectImage(formData: FormData) {
+  const supabase = await getSupabase()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error("Not authenticated")
+
+  const projectId = formData.get('projectId') as string
+  const file = formData.get('file') as File
+
+  if (!file || file.size === 0) {
+    throw new Error("No file provided")
+  }
+
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${user.id}-${Date.now()}.${fileExt}`
+  const filePath = `${projectId}/${fileName}`
+
+  // Ensure you create the 'project_images' bucket in Supabase dashboard
+  const { error: uploadError } = await supabase.storage
+    .from('project_images')
+    .upload(filePath, file)
+
+  if (uploadError) {
+    console.error('Error uploading image:', uploadError)
+    throw new Error(`Failed to upload: ${uploadError.message}`)
+  }
+
+  const { data } = supabase.storage
+    .from('project_images')
+    .getPublicUrl(filePath)
+
+  return { success: true, url: data.publicUrl }
+}

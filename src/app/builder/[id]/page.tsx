@@ -22,7 +22,7 @@ import {
     useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { saveProjectSections, publishProject, checkIsPro } from './actions'
+import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage } from './actions'
 
 type WizardStep = 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
 
@@ -113,6 +113,72 @@ function EditableMarkdown({ initialValue, onChange }: { initialValue: string, on
         />
     )
 }
+
+function FigmaImageBlock({ section, projectId, updateSection }: { section: any, projectId: string, updateSection: (id: string, content: any) => void }) {
+    const [isUploading, setIsUploading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setIsUploading(true)
+        setError(null)
+        try {
+            const formData = new FormData()
+            formData.append('projectId', projectId)
+            formData.append('file', file)
+
+            const res = await uploadProjectImage(formData)
+            if (res.success && res.url) {
+                updateSection(section.id, { ...section.content, url: res.url })
+            }
+        } catch (err: any) {
+            console.error(err)
+            setError(err.message || 'Upload failed')
+        } finally {
+            setIsUploading(false)
+        }
+    }
+
+    const hasImage = section.content?.url && section.content.url !== '/placeholder:image'
+
+    return (
+        <div className={`w-full ${hasImage ? '' : 'aspect-video'} bg-zinc-100 dark:bg-zinc-900 rounded-lg flex flex-col items-center justify-center border border-zinc-300 dark:border-white/10 ${hasImage ? '' : 'border-dashed'} transition-colors relative overflow-hidden group`}>
+            {hasImage ? (
+                <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={section.content.url} alt="Project asset" className="w-full object-contain rounded-lg" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-lg z-10">
+                        <label className="cursor-pointer bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg backdrop-blur text-sm font-medium transition-colors">
+                            {isUploading ? 'Uploading...' : 'Change Image'}
+                            <input type="file" accept="image/*" className="hidden" onChange={handleUpload} disabled={isUploading} />
+                        </label>
+                    </div>
+                </>
+            ) : (
+                <div className="flex flex-col items-center text-center p-6">
+                    {isUploading ? (
+                        <div className="flex flex-col items-center gap-2">
+                            <Sparkles className="h-5 w-5 animate-pulse text-zinc-400" />
+                            <span className="text-sm text-zinc-500 font-medium animate-pulse">Uploading...</span>
+                        </div>
+                    ) : (
+                        <>
+                            <span className="text-sm text-zinc-500 font-medium mb-3">Figma Image Placeholder</span>
+                            <label className="cursor-pointer bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-white/10 hover:bg-zinc-50 dark:hover:bg-zinc-700 px-4 py-2 rounded-lg text-sm font-medium text-zinc-900 dark:text-white transition-colors">
+                                Upload Image
+                                <input type="file" accept="image/*" className="hidden" onChange={handleUpload} />
+                            </label>
+                            {error && <span className="text-xs text-red-500 mt-2 max-w-xs">{error}</span>}
+                        </>
+                    )}
+                </div>
+            )}
+        </div>
+    )
+}
+
 
 export default function BuilderPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params)
@@ -422,9 +488,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                                 />
                                             )}
                                             {section.type === 'figma_image' && (
-                                                <div className="w-full aspect-video bg-zinc-100 dark:bg-zinc-900 rounded-lg flex flex-col items-center justify-center border border-zinc-300 dark:border-white/10 border-dashed transition-colors">
-                                                    <span className="text-sm text-zinc-500 font-medium">Figma Image Placeholder</span>
-                                                </div>
+                                                <FigmaImageBlock section={section} projectId={projectId} updateSection={updateSection} />
                                             )}
                                             {section.type === 'barchart' && (
                                                 <div className="h-64 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 flex flex-col items-center justify-center transition-colors">
