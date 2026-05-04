@@ -184,7 +184,8 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const resolvedParams = use(params)
     const projectId = resolvedParams.id
 
-    const [step, setStep] = useState<WizardStep>('goal')
+    const isDemo = projectId.includes('demo') || projectId.includes('mock')
+    const [step, setStep] = useState<WizardStep>(isDemo ? 'done' : 'goal')
     const [goal, setGoal] = useState('')
     const [constraints, setConstraints] = useState('')
     const [outcome, setOutcome] = useState('')
@@ -192,7 +193,18 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
 
     // DND State
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const [sections, setSections] = useState<any[]>([])
+    const [sections, setSections] = useState<any[]>(isDemo ? [
+        {
+            id: `ai_text_demo1`,
+            type: 'ai_text',
+            content: { text: "## The Challenge\n\nThe primary goal was to redesign the core experience to reduce drop-off rates. However, we were faced with several significant limitations." }
+        },
+        {
+            id: `figma_image_demo1`,
+            type: 'figma_image',
+            content: { url: '/placeholder:image' }
+        }
+    ] : [])
     const [isSaving, setIsSaving] = useState(false)
     const [isPublishing, setIsPublishing] = useState(false)
     const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
