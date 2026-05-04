@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useFormStatus } from 'react-dom'
 import { Loader2 } from 'lucide-react'
 import { login, signup } from './actions'
@@ -26,8 +26,12 @@ function SubmitButton({ isSignUp }: { isSignUp: boolean }) {
     )
 }
 
-export function LoginForm({ error }: { error?: string }) {
-    const [isSignUp, setIsSignUp] = useState(false)
+export function LoginForm({ error, initialIsSignUp = false }: { error?: string, initialIsSignUp?: boolean }) {
+    const [isSignUp, setIsSignUp] = useState(initialIsSignUp)
+
+    useEffect(() => {
+        setIsSignUp(initialIsSignUp)
+    }, [initialIsSignUp])
 
     return (
         <div className="w-full max-w-sm rounded-[24px] border border-zinc-200 dark:border-white/5 bg-black/5 dark:bg-white/5 p-8 shadow-2xl backdrop-blur-xl">

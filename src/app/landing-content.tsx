@@ -81,7 +81,7 @@ export function LandingContent() {
                         Start building for free
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
-                    <Link href="#demo" className="btn-secondary text-base px-10 py-4">
+                    <Link href="/builder/demo" className="btn-secondary text-base px-10 py-4">
                         View Interactive Demo
                     </Link>
                 </motion.div>

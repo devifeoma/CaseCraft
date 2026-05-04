@@ -5,7 +5,7 @@ import { LoginForm } from './login-form'
 export default async function LoginPage({
     searchParams,
 }: {
-    searchParams: Promise<{ error?: string }>
+    searchParams: Promise<{ error?: string, signup?: string }>
 }) {
     const resolvedSearchParams = await searchParams
     return (
@@ -17,7 +17,7 @@ export default async function LoginPage({
                 </Link>
             </div>
 
-            <LoginForm error={resolvedSearchParams?.error} />
+            <LoginForm key={resolvedSearchParams?.signup === 'true' ? 'signup' : 'login'} error={resolvedSearchParams?.error} initialIsSignUp={resolvedSearchParams?.signup === 'true'} />
         </div>
     )
 }

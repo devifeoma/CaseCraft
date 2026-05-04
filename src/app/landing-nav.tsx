@@ -94,7 +94,7 @@ export function LandingNav({ userEmail }: { userEmail?: string | null }) {
                     ) : (
                         <>
                             <Link href="/login" className="text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">Log in</Link>
-                            <Link href="/login" className="group rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all flex items-center gap-2">
+                            <Link href="/login?signup=true" className="group rounded-full bg-zinc-900 dark:bg-white px-5 py-2 text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all flex items-center gap-2">
                                 Sign up <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                             </Link>
                         </>
@@ -136,7 +136,7 @@ export function LandingNav({ userEmail }: { userEmail?: string | null }) {
                     ) : (
                         <>
                             <Link onClick={() => setIsMobileMenuOpen(false)} href="/login" className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors">Log in</Link>
-                            <Link onClick={() => setIsMobileMenuOpen(false)} href="/login" className="flex items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-2.5 text-sm font-medium text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all">
+                            <Link onClick={() => setIsMobileMenuOpen(false)} href="/login?signup=true" className="flex items-center justify-center gap-2 rounded-full bg-zinc-900 dark:bg-white px-5 py-2.5 text-sm font-medium text-white dark:text-black hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all">
                                 Sign up <ArrowRight className="h-4 w-4" />
                             </Link>
                         </>
