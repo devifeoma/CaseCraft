@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { CheckCircle2, User, CreditCard, Sparkles } from 'lucide-react'
 import { ProfileForm } from './profile-form'
+import { ManageSubscriptionButton } from './manage-subscription-button'
 
 export default async function SettingsPage() {
     const supabase = await createClient()
@@ -15,6 +16,12 @@ export default async function SettingsPage() {
         .from('profiles')
         .select('*')
         .eq('id', user.id)
+        .single()
+
+    const { data: subscription } = await supabase
+        .from('subscriptions')
+        .select('tier')
+        .eq('user_id', user.id)
         .single()
 
     return (
@@ -66,19 +73,18 @@ export default async function SettingsPage() {
                             <div>
                                 <div className="flex items-center gap-3 mb-2">
                                     <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Subscription Plan</h2>
-                                    <span className="inline-flex items-center rounded-full bg-zinc-200 dark:bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                                        Free Tier
+                                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${subscription?.tier === 'pro' ? 'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-400' : 'bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300'}`}>
+                                        {subscription?.tier === 'pro' ? 'Pro Tier' : 'Free Tier'}
                                     </span>
                                 </div>
                                 <p className="text-sm text-zinc-600 dark:text-zinc-400 max-w-md">
-                                    You are currently on the Free plan. Upgrade to Pro to unlock unlimited projects, password protection, and PDF exports.
+                                    {subscription?.tier === 'pro' 
+                                        ? 'You have unlimited access to all Pro features. Thank you for supporting CaseCraft!' 
+                                        : 'You are currently on the Free plan. Upgrade to Pro to unlock unlimited projects, password protection, and Figma embeds.'}
                                 </p>
                             </div>
 
-                            <button className="whitespace-nowrap inline-flex items-center justify-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-purple-500 shadow-lg shadow-purple-500/20 w-full sm:w-auto">
-                                <Sparkles className="h-4 w-4" />
-                                Upgrade to Pro
-                            </button>
+                            <ManageSubscriptionButton isPro={subscription?.tier === 'pro'} />
                         </div>
 
                         {/* Decorative Background for Subscription */}

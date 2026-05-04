@@ -1,9 +1,41 @@
 'use client'
 
 import Link from 'next/link';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 export function PricingSection() {
+    const [isLoading, setIsLoading] = useState<'month' | 'year' | null>(null);
+
+    const handleUpgrade = async (interval: 'month' | 'year') => {
+        setIsLoading(interval);
+        try {
+            const res = await fetch('/api/stripe/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ interval })
+            });
+
+            if (res.status === 401) {
+                // Not logged in
+                window.location.href = `/login?plan=pro&interval=${interval}`;
+                return;
+            }
+
+            const data = await res.json();
+            
+            if (data.url) {
+                window.location.href = data.url;
+            } else if (data.error) {
+                alert(`Error: ${data.error}`);
+            }
+        } catch (err: any) {
+            alert('Failed to initiate checkout. Please try again.');
+        } finally {
+            setIsLoading(null);
+        }
+    };
+
     return (
         <div id="pricing" className="w-full max-w-6xl mx-auto pt-16 border-t border-zinc-200 dark:border-white/10 transition-colors duration-300">
             <div className="text-center mb-12">
@@ -26,7 +58,7 @@ export function PricingSection() {
                         <li className="flex items-center gap-3"><ShieldCheck className="h-5 w-5 text-zinc-400 dark:text-zinc-500" /> Basic AI Context Engine</li>
                         <li className="flex items-center gap-3 text-zinc-400 dark:text-zinc-500 opacity-60"><ShieldCheck className="h-5 w-5" /> CaseCraft Watermark</li>
                     </ul>
-                    <Link href="/login" className="btn-secondary mt-auto w-full py-4 text-base">
+                    <Link href="/login" className="btn-secondary mt-auto w-full py-4 text-base text-center">
                         Get Started for Free
                     </Link>
                 </div>
@@ -51,9 +83,13 @@ export function PricingSection() {
                         <li className="flex items-center gap-3"><ShieldCheck className="h-5 w-5 text-zinc-400 dark:text-zinc-500" /> Password Protection</li>
                         <li className="flex items-center gap-3"><ShieldCheck className="h-5 w-5 text-zinc-400 dark:text-zinc-500" /> Figma Embeds</li>
                     </ul>
-                    <Link href="/login?plan=pro&interval=month" className="btn-secondary mt-auto w-full py-4 text-base relative z-10 text-center">
-                        Upgrade Monthly
-                    </Link>
+                    <button 
+                        onClick={() => handleUpgrade('month')}
+                        disabled={isLoading !== null}
+                        className="btn-secondary mt-auto w-full py-4 text-base relative z-10 text-center flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                        {isLoading === 'month' ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : 'Upgrade Monthly'}
+                    </button>
                 </div>
 
                 {/* Pro Yearly Tier */}
@@ -86,9 +122,13 @@ export function PricingSection() {
                         <li className="flex items-center gap-3"><ShieldCheck className="h-5 w-5 text-brand-500 dark:text-brand-400" /> Password Protection</li>
                         <li className="flex items-center gap-3"><ShieldCheck className="h-5 w-5 text-brand-500 dark:text-brand-400" /> Figma Embeds</li>
                     </ul>
-                    <Link href="/login?plan=pro&interval=year" className="btn-primary mt-auto w-full py-4 text-base relative z-10 text-center">
-                        Upgrade Yearly
-                    </Link>
+                    <button 
+                        onClick={() => handleUpgrade('year')}
+                        disabled={isLoading !== null}
+                        className="btn-primary mt-auto w-full py-4 text-base relative z-10 text-center flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                        {isLoading === 'year' ? <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</> : 'Upgrade Yearly'}
+                    </button>
                 </div>
             </div>
         </div>
