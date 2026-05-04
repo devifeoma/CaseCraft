@@ -94,36 +94,28 @@ export function LandingContent() {
                     className="w-full max-w-5xl mt-24 relative z-10 perspective-[2000px]"
                 >
                     <div className="rounded-2xl md:rounded-[2rem] border border-white/10 bg-white/5 p-2 md:p-4 shadow-2xl backdrop-blur-3xl overflow-hidden transform-gpu hover:-translate-y-2 transition-transform duration-500">
-                        <div className="aspect-[16/9] w-full rounded-xl md:rounded-[1.5rem] bg-zinc-900 overflow-hidden relative border border-white/5 shadow-inner">
-                            {/* Fake UI */}
-                            <div className="absolute top-0 w-full h-12 border-b border-white/5 bg-black/40 flex items-center px-4 gap-2">
+                        <div className="aspect-[16/9] w-full rounded-xl md:rounded-[1.5rem] bg-zinc-900 overflow-hidden relative border border-white/5 shadow-inner flex flex-col">
+                            {/* Browser Top Bar */}
+                            <div className="w-full h-10 md:h-12 border-b border-white/5 bg-black flex items-center px-4 gap-2 flex-shrink-0 z-20">
                                 <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
-                                    <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/80 border border-red-500"></div>
+                                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500/80 border border-yellow-500"></div>
+                                    <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500/80 border border-green-500"></div>
                                 </div>
-                                <div className="mx-auto px-4 py-1 rounded-md bg-white/5 text-[10px] text-white/40 font-mono flex items-center gap-2">
-                                    <Sparkles className="w-3 h-3" /> casecraft.app/builder
+                                <div className="mx-auto px-4 py-1 rounded-md bg-white/5 text-[10px] md:text-xs text-white/60 font-mono flex items-center gap-2">
+                                    <Sparkles className="w-3 h-3" /> casecraft.app/builder/demo
                                 </div>
+                                <div className="w-10"></div> {/* Spacer for alignment */}
                             </div>
-                            <div className="absolute top-12 bottom-0 w-64 border-r border-white/5 bg-black/20 p-4 hidden md:block">
-                                <div className="h-8 w-3/4 bg-white/5 rounded-md mb-6"></div>
-                                <div className="h-4 w-full bg-white/5 rounded-md mb-3"></div>
-                                <div className="h-4 w-5/6 bg-white/5 rounded-md mb-3"></div>
-                                <div className="h-4 w-4/6 bg-white/5 rounded-md mb-8"></div>
-                                <div className="h-32 w-full bg-brand-500/10 border border-brand-500/20 rounded-xl flex items-center justify-center text-brand-500/50">
-                                    <Layers className="w-8 h-8" />
-                                </div>
-                            </div>
-                            <div className="absolute top-12 bottom-0 left-0 md:left-64 right-0 p-8 flex flex-col gap-6">
-                                <div className="w-full max-w-lg h-12 bg-white/5 rounded-lg border-l-2 border-brand-500 flex items-center px-4">
-                                    <div className="w-4 h-4 rounded-full bg-brand-500 animate-pulse mr-3"></div>
-                                    <div className="h-4 w-1/2 bg-white/10 rounded"></div>
-                                </div>
-                                <div className="w-full h-full bg-white/5 rounded-xl border border-white/5 flex items-center justify-center relative overflow-hidden">
-                                     <div className="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-purple-500/5"></div>
-                                     <Figma className="w-16 h-16 text-white/10" />
-                                </div>
+                            
+                            {/* Real Interactive Demo */}
+                            <div className="flex-1 w-full relative bg-background pointer-events-auto">
+                                {/* Invisible overlay to prevent scroll hijacking until clicked (optional, but good UX) */}
+                                <iframe 
+                                    src="/builder/demo" 
+                                    className="w-full h-full border-0 absolute inset-0"
+                                    title="CaseCraft Builder Interactive Demo"
+                                />
                             </div>
                         </div>
                     </div>
