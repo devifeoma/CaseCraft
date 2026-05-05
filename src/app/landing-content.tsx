@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ArrowRight, Figma, Sparkles, Layers, Zap, PenTool, BarChart3, Layout } from 'lucide-react'
 import { PricingSection } from './pricing-section'
 
-export function LandingContent() {
+export function LandingContent({ userEmail }: { userEmail?: string | null }) {
     return (
         <div className="relative z-10 w-full flex flex-col items-center overflow-x-hidden">
             {/* Hero Section */}
@@ -77,8 +77,8 @@ export function LandingContent() {
                     transition={{ duration: 0.8, delay: 0.3 }}
                     className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto relative z-10"
                 >
-                    <Link href="/login" className="btn-primary flex items-center justify-center group text-base px-10 py-4">
-                        Start building for free
+                    <Link href={userEmail ? "/dashboard" : "/login?signup=true"} className="btn-primary flex items-center justify-center group text-base px-10 py-4">
+                        {userEmail ? "Go to Dashboard" : "Start building for free"}
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                     <Link href="/builder/demo" className="btn-secondary text-base px-10 py-4">
@@ -220,10 +220,10 @@ export function LandingContent() {
                 <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
                     <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-6">Ready to stop explaining <br/> and start proving?</h2>
                     <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl">Join the thousands of designers using CaseCraft to build high-converting portfolios that speak for themselves.</p>
-                    <Link href="/login" className="relative group overflow-hidden rounded-full p-[1px] inline-flex">
+                    <Link href={userEmail ? "/dashboard" : "/login?signup=true"} className="relative group overflow-hidden rounded-full p-[1px] inline-flex">
                         <span className="absolute inset-0 bg-gradient-to-r from-brand-500 via-purple-500 to-cyan-400 animate-pulse rounded-full"></span>
                         <div className="relative bg-zinc-950 px-10 py-4 rounded-full flex items-center justify-center gap-2 group-hover:bg-zinc-900 transition-colors">
-                            <span className="text-lg font-medium text-white">Build your first project</span>
+                            <span className="text-lg font-medium text-white">{userEmail ? "Go to Dashboard" : "Build your first project"}</span>
                             <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                         </div>
                     </Link>

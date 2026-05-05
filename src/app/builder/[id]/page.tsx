@@ -178,7 +178,240 @@ function FigmaImageBlock({ section, projectId, updateSection }: { section: any, 
         </div>
     )
 }
+function EditableTestimonial({ content, onChange }: { content: any, onChange: (val: any) => void }) {
+    const [isEditing, setIsEditing] = useState(!content.quote)
+    const quote = content.quote || "This redesign completely changed how our users interact with the platform..."
+    const author = content.author || "Jane Doe"
+    const role = content.role || "Product Manager"
 
+    if (isEditing) {
+        return (
+            <div className="flex flex-col gap-3 p-4 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50/50 dark:bg-white/5">
+                <textarea 
+                    value={quote} 
+                    onChange={(e) => onChange({ ...content, quote: e.target.value })} 
+                    placeholder="Quote" 
+                    className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                />
+                <div className="flex gap-2">
+                    <input 
+                        value={author} 
+                        onChange={(e) => onChange({ ...content, author: e.target.value })} 
+                        placeholder="Author" 
+                        className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                    />
+                    <input 
+                        value={role} 
+                        onChange={(e) => onChange({ ...content, role: e.target.value })} 
+                        placeholder="Role" 
+                        className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                    />
+                </div>
+                <button onClick={() => setIsEditing(false)} className="self-end rounded-lg bg-zinc-200 dark:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition">Done</button>
+            </div>
+        )
+    }
+
+    return (
+        <div onClick={() => setIsEditing(true)} className="group cursor-pointer p-8 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 relative overflow-hidden transition-colors hover:border-zinc-300 dark:hover:border-white/20">
+            <div className="absolute top-0 right-0 p-8 text-8xl text-black/5 dark:text-white/5 leading-none font-serif opacity-50">&quot;</div>
+            <p className="text-zinc-700 dark:text-zinc-300 italic mb-4 relative z-10">&quot;{quote}&quot;</p>
+            <div className="flex items-center gap-3 relative z-10">
+                <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-bold text-zinc-400">{author.charAt(0)}</div>
+                <div><p className="text-sm text-zinc-900 dark:text-white font-medium">{author}</p><p className="text-xs text-zinc-500">{role}</p></div>
+            </div>
+            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20 pointer-events-none">
+                <span className="bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm border border-zinc-200 dark:border-white/10">Click to edit</span>
+            </div>
+        </div>
+    )
+}
+
+function EditableBarChart({ content, onChange }: { content: any, onChange: (val: any) => void }) {
+    const [isEditing, setIsEditing] = useState(!content.data)
+    const title = content.title || "Impact Metrics"
+    const data = content.data || [
+        { label: "Before", value: 40, color: "bg-zinc-300 dark:bg-zinc-700" },
+        { label: "After", value: 85, color: "bg-brand-500" }
+    ]
+
+    const maxValue = Math.max(...data.map((d: any) => d.value), 100)
+
+    if (isEditing) {
+        return (
+            <div className="flex flex-col gap-4 p-4 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50/50 dark:bg-white/5">
+                <div>
+                    <label className="text-xs font-medium text-zinc-500 mb-1 block">Chart Title</label>
+                    <input 
+                        value={title} 
+                        onChange={(e) => onChange({ ...content, title: e.target.value })} 
+                        className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                    />
+                </div>
+                <div className="space-y-3">
+                    <label className="text-xs font-medium text-zinc-500 block">Data Points</label>
+                    {data.map((item: any, idx: number) => (
+                        <div key={idx} className="flex gap-2">
+                            <input 
+                                value={item.label}
+                                onChange={(e) => {
+                                    const newData = [...data]
+                                    newData[idx].label = e.target.value
+                                    onChange({ ...content, data: newData })
+                                }}
+                                placeholder="Label"
+                                className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                            />
+                            <input 
+                                type="number"
+                                value={item.value}
+                                onChange={(e) => {
+                                    const newData = [...data]
+                                    newData[idx].value = Number(e.target.value)
+                                    onChange({ ...content, data: newData })
+                                }}
+                                placeholder="Value"
+                                className="w-24 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                            />
+                            <select 
+                                value={item.color}
+                                onChange={(e) => {
+                                    const newData = [...data]
+                                    newData[idx].color = e.target.value
+                                    onChange({ ...content, data: newData })
+                                }}
+                                className="w-32 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                            >
+                                <option value="bg-zinc-300 dark:bg-zinc-700">Gray</option>
+                                <option value="bg-brand-500">Brand Blue</option>
+                                <option value="bg-emerald-500">Success Green</option>
+                                <option value="bg-purple-500">Purple</option>
+                            </select>
+                            <button 
+                                onClick={() => {
+                                    const newData = data.filter((_: any, i: number) => i !== idx)
+                                    onChange({ ...content, data: newData })
+                                }}
+                                className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    ))}
+                    <button 
+                        onClick={() => onChange({ ...content, data: [...data, { label: "New", value: 50, color: "bg-brand-500" }] })}
+                        className="text-xs font-medium text-brand-500 hover:text-brand-600 transition flex self-start"
+                    >
+                        + Add Data Point
+                    </button>
+                </div>
+                <button onClick={() => setIsEditing(false)} className="self-end rounded-lg bg-zinc-200 dark:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition">Done</button>
+            </div>
+        )
+    }
+
+    return (
+        <div onClick={() => setIsEditing(true)} className="group cursor-pointer p-6 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 relative transition-colors hover:border-zinc-300 dark:hover:border-white/20">
+            <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-6 text-center">{title}</h4>
+            <div className="flex items-end justify-center gap-4 h-48 w-full max-w-md mx-auto">
+                {data.map((item: any, idx: number) => (
+                    <div key={idx} className="flex flex-col items-center gap-2 flex-1 group/bar">
+                        <div className="relative w-full flex justify-center h-full items-end">
+                            <span className="absolute -top-6 text-xs font-medium text-zinc-500 opacity-0 group-hover/bar:opacity-100 transition-opacity">{item.value}</span>
+                            <div 
+                                className={`w-full max-w-[4rem] rounded-t-sm transition-all duration-500 ${item.color}`}
+                                style={{ height: `${(item.value / maxValue) * 100}%` }}
+                            />
+                        </div>
+                        <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400 text-center truncate w-full">{item.label}</span>
+                    </div>
+                ))}
+            </div>
+            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20 pointer-events-none rounded-xl">
+                <span className="bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm border border-zinc-200 dark:border-white/10">Click to edit</span>
+            </div>
+        </div>
+    )
+}
+
+function EditableProgressRing({ content, onChange }: { content: any, onChange: (val: any) => void }) {
+    const [isEditing, setIsEditing] = useState(!content.percentage)
+    const percentage = content.percentage || 75
+    const label = content.label || "Performance Increase"
+    const color = content.color || "text-emerald-500"
+
+    if (isEditing) {
+        return (
+            <div className="flex flex-col gap-4 p-4 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50/50 dark:bg-white/5">
+                <div className="flex gap-4">
+                    <div className="flex-1">
+                        <label className="text-xs font-medium text-zinc-500 mb-1 block">Percentage</label>
+                        <input 
+                            type="number"
+                            value={percentage} 
+                            onChange={(e) => onChange({ ...content, percentage: Number(e.target.value) })} 
+                            className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <label className="text-xs font-medium text-zinc-500 mb-1 block">Color</label>
+                        <select 
+                            value={color}
+                            onChange={(e) => onChange({ ...content, color: e.target.value })}
+                            className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                        >
+                            <option value="text-brand-500">Brand Blue</option>
+                            <option value="text-emerald-500">Success Green</option>
+                            <option value="text-purple-500">Purple</option>
+                            <option value="text-zinc-900 dark:text-white">Neutral</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label className="text-xs font-medium text-zinc-500 mb-1 block">Label</label>
+                    <input 
+                        value={label} 
+                        onChange={(e) => onChange({ ...content, label: e.target.value })} 
+                        className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 rounded-lg p-2 text-sm text-zinc-900 dark:text-white"
+                    />
+                </div>
+                <button onClick={() => setIsEditing(false)} className="self-end rounded-lg bg-zinc-200 dark:bg-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition">Done</button>
+            </div>
+        )
+    }
+
+    const radius = 60;
+    const circumference = 2 * Math.PI * radius;
+    const strokeDashoffset = circumference - (percentage / 100) * circumference;
+
+    return (
+        <div onClick={() => setIsEditing(true)} className="group cursor-pointer p-8 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 relative transition-colors hover:border-zinc-300 dark:hover:border-white/20 flex flex-col items-center justify-center">
+            <div className="relative w-40 h-40 flex items-center justify-center">
+                {/* Background Ring */}
+                <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 140 140">
+                    <circle 
+                        cx="70" cy="70" r={radius} 
+                        className="stroke-zinc-200 dark:stroke-zinc-800"
+                        strokeWidth="12" fill="none"
+                    />
+                    {/* Foreground Ring */}
+                    <circle 
+                        cx="70" cy="70" r={radius} 
+                        className={`stroke-current ${color} transition-all duration-1000 ease-out`}
+                        strokeWidth="12" fill="none" strokeLinecap="round"
+                        style={{ strokeDasharray: circumference, strokeDashoffset }}
+                    />
+                </svg>
+                <span className="text-3xl font-semibold text-zinc-900 dark:text-white relative z-10">{percentage}%</span>
+            </div>
+            <p className="mt-4 text-sm font-medium text-zinc-600 dark:text-zinc-400">{label}</p>
+            
+            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20 pointer-events-none rounded-xl">
+                <span className="bg-white dark:bg-zinc-800 px-3 py-1.5 rounded-lg text-xs font-medium shadow-sm border border-zinc-200 dark:border-white/10">Click to edit</span>
+            </div>
+        </div>
+    )
+}
 
 export default function BuilderPage({ params }: { params: Promise<{ id: string }> }) {
     const resolvedParams = use(params)
@@ -503,26 +736,22 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                                 <FigmaImageBlock section={section} projectId={projectId} updateSection={updateSection} />
                                             )}
                                             {section.type === 'barchart' && (
-                                                <div className="h-64 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 flex flex-col items-center justify-center transition-colors">
-                                                    <span className="text-brand-600 dark:text-brand-400 font-medium tracking-wide">Interactive Bar Chart Module</span>
-                                                    <span className="text-xs text-zinc-500 mt-2">Data viz injected here</span>
-                                                </div>
+                                                <EditableBarChart 
+                                                    content={section.content || {}} 
+                                                    onChange={(newContent) => updateSection(section.id, newContent)} 
+                                                />
                                             )}
                                             {section.type === 'ring' && (
-                                                <div className="h-48 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 flex flex-col items-center justify-center transition-colors">
-                                                    <span className="text-emerald-600 dark:text-emerald-400 font-medium tracking-wide">Progress Ring Module</span>
-                                                    <span className="text-xs text-zinc-500 mt-2">+100% Increase</span>
-                                                </div>
+                                                <EditableProgressRing 
+                                                    content={section.content || {}} 
+                                                    onChange={(newContent) => updateSection(section.id, newContent)} 
+                                                />
                                             )}
                                             {section.type === 'testimonial' && (
-                                                <div className="p-8 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 relative overflow-hidden transition-colors">
-                                                    <div className="absolute top-0 right-0 p-8 text-8xl text-black/5 dark:text-white/5 leading-none font-serif opacity-50">&quot;</div>
-                                                    <p className="text-zinc-700 dark:text-zinc-300 italic mb-4 relative z-10">&quot;This redesign completely changed how our users interact with the platform...&quot;</p>
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-800"></div>
-                                                        <div><p className="text-sm text-zinc-900 dark:text-white font-medium">Jane Doe</p><p className="text-xs text-zinc-500">Product Manager</p></div>
-                                                    </div>
-                                                </div>
+                                                <EditableTestimonial 
+                                                    content={section.content || {}} 
+                                                    onChange={(newContent) => updateSection(section.id, newContent)} 
+                                                />
                                             )}
                                         </div>
                                     </SortableItem>
