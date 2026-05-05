@@ -1,6 +1,7 @@
 'use server'
 
 import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import bcrypt from 'bcryptjs'
 
@@ -179,8 +180,13 @@ export async function uploadProjectImage(formData: FormData) {
   const fileName = `${user.id}-${Date.now()}.${fileExt}`
   const filePath = `${projectId}/${fileName}`
 
-  // Ensure you create the 'project_images' bucket in Supabase dashboard
-  const { error: uploadError } = await supabase.storage
+  // Now use the service role key to bypass storage RLS
+  const adminSupabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const { error: uploadError } = await adminSupabase.storage
     .from('project_images')
     .upload(filePath, file)
 
@@ -189,9 +195,35 @@ export async function uploadProjectImage(formData: FormData) {
     throw new Error(`Failed to upload: ${uploadError.message}`)
   }
 
-  const { data } = supabase.storage
+  const { data } = adminSupabase.storage
     .from('project_images')
     .getPublicUrl(filePath)
 
   return { success: true, url: data.publicUrl }
+}
+
+export async function getProjectSections(projectId: string) {
+  if (projectId.includes('demo') || projectId.includes('mock')) {
+    return { sections: null }
+  }
+
+  const supabase = await getSupabase()
+  
+  const { data: project, error: projError } = await supabase
+    .from('projects')
+    .select('id')
+    .eq('id', projectId)
+    .single()
+    
+  if (projError || !project) throw new Error("Project not found")
+
+  const { data: sections, error: secError } = await supabase
+    .from('sections')
+    .select('*')
+    .eq('project_id', projectId)
+    .order('sort_order', { ascending: true })
+
+  if (secError) throw new Error(secError.message)
+
+  return { sections }
 }

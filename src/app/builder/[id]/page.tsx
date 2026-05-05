@@ -22,9 +22,9 @@ import {
     useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage } from './actions'
+import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage, getProjectSections } from './actions'
 
-type WizardStep = 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
+type WizardStep = 'loading' | 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
 
 // A basic Sortable Item wrapper
 function SortableItem({ id, children, onRemove }: { id: string, children: React.ReactNode, onRemove: () => void }) {
@@ -313,10 +313,10 @@ function EditableBarChart({ content, onChange }: { content: any, onChange: (val:
     return (
         <div onClick={() => setIsEditing(true)} className="group cursor-pointer p-6 border border-zinc-200 dark:border-white/10 rounded-xl bg-zinc-50 dark:bg-black/50 relative transition-colors hover:border-zinc-300 dark:hover:border-white/20">
             <h4 className="text-sm font-medium text-zinc-900 dark:text-white mb-6 text-center">{title}</h4>
-            <div className="flex items-end justify-center gap-4 h-48 w-full max-w-md mx-auto">
+            <div className="flex justify-center gap-4 h-48 w-full max-w-md mx-auto">
                 {data.map((item: any, idx: number) => (
-                    <div key={idx} className="flex flex-col items-center gap-2 flex-1 group/bar">
-                        <div className="relative w-full flex justify-center h-full items-end">
+                    <div key={idx} className="flex flex-col items-center gap-2 flex-1 group/bar h-full">
+                        <div className="relative w-full flex justify-center flex-1 items-end">
                             <span className="absolute -top-6 text-xs font-medium text-zinc-500 opacity-0 group-hover/bar:opacity-100 transition-opacity">{item.value}</span>
                             <div 
                                 className={`w-full max-w-[4rem] rounded-t-sm transition-all duration-500 ${item.color}`}
@@ -418,7 +418,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const projectId = resolvedParams.id
 
     const isDemo = projectId.includes('demo') || projectId.includes('mock')
-    const [step, setStep] = useState<WizardStep>(isDemo ? 'done' : 'goal')
+    const [step, setStep] = useState<WizardStep>(isDemo ? 'done' : 'loading')
     const [goal, setGoal] = useState('')
     const [constraints, setConstraints] = useState('')
     const [outcome, setOutcome] = useState('')
@@ -444,12 +444,27 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const [isPro, setIsPro] = useState(false)
 
     useEffect(() => {
-        const checkTier = async () => {
+        const loadProjectData = async () => {
+            if (isDemo) return
+
+            try {
+                const { sections: dbSections } = await getProjectSections(projectId)
+                if (dbSections && dbSections.length > 0) {
+                    setSections(dbSections)
+                    setStep('done')
+                } else {
+                    setStep('goal')
+                }
+            } catch (e) {
+                console.error("Failed to load project sections", e)
+                setStep('goal')
+            }
+
             const hasPro = await checkIsPro()
             setIsPro(hasPro)
         }
-        checkTier()
-    }, [])
+        loadProjectData()
+    }, [projectId, isDemo])
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -533,7 +548,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
         }
     }
 
-    // --- WIZARD RENDER ---
+    // --- WIZARD / LOADING RENDER ---
     if (step !== 'done') {
         return (
             <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground p-6 transition-colors duration-300 relative">
@@ -545,7 +560,13 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                     <span className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-white">CaseCraft</span>
                 </Link>
 
-                <div className="w-full max-w-xl">
+                {step === 'loading' ? (
+                    <div className="flex flex-col items-center gap-4 animate-in fade-in">
+                        <Sparkles className="h-8 w-8 animate-pulse text-purple-500" />
+                        <p className="text-sm font-medium text-zinc-500">Loading project...</p>
+                    </div>
+                ) : (
+                    <div className="w-full max-w-xl">
                     <div className="mb-8 flex items-center gap-4 text-sm font-medium">
                         <div className={`flex items-center gap-2 ${step === 'goal' ? 'text-zinc-900 dark:text-white' : 'text-zinc-500'}`}>
                             <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current text-xs">1</span>
@@ -643,8 +664,9 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                 <p className="max-w-xs text-sm text-zinc-600 dark:text-zinc-400">Our AI agent is formatting your inputs into a professional case study structure.</p>
                             </div>
                         )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         )
     }
@@ -655,11 +677,9 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
             {/* Topbar */}
             <header className="fixed left-0 right-0 top-0 z-50 flex h-14 items-center justify-between border-b border-zinc-200 bg-white/80 px-4 backdrop-blur-md dark:border-white/5 dark:bg-black/80">
                 <div className="flex items-center gap-4">
-                    <Link href="/dashboard" className="flex items-center gap-2 pr-4 border-r border-zinc-200 dark:border-white/10 hover:opacity-80 transition-opacity">
-                        <div className="relative flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-brand-500 to-indigo-600 shadow-sm">
-                            <Sparkles className="h-3 w-3 text-white" />
-                        </div>
-                        <span className="font-semibold tracking-tight text-zinc-900 dark:text-white hidden sm:block">CaseCraft</span>
+                    <Link href="/dashboard" className="group flex items-center gap-2 pr-4 border-r border-zinc-200 dark:border-white/10 hover:opacity-80 transition-opacity text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                        <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                        <span className="hidden sm:block">Back to Dashboard</span>
                     </Link>
                     <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]">Project: {projectId}</span>
                 </div>

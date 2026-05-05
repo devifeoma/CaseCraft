@@ -60,7 +60,8 @@ export default async function DashboardPage() {
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
                     {projects.map((project) => (
                         <div key={project.id} className="group relative flex flex-col rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/50 p-6 shadow-sm transition-all hover:shadow-md hover:border-zinc-300 dark:hover:border-white/20">
-                            <div className="mb-4 flex items-start justify-between">
+                            <Link href={`/builder/${project.id}`} className="absolute inset-0 z-0" aria-label={`Edit ${project.name || 'Untitled Project'}`} />
+                            <div className="mb-4 flex items-start justify-between relative z-10 pointer-events-none">
                                 <h3 className="text-lg font-semibold text-zinc-900 dark:text-white truncate pr-4">
                                     {project.name || 'Untitled Project'}
                                 </h3>
@@ -75,12 +76,12 @@ export default async function DashboardPage() {
                                 )}
                             </div>
 
-                            <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6 flex-1">
+                            <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6 flex-1 relative z-10 pointer-events-none">
                                 {project.goal || 'No description available yet.'}
                             </p>
 
-                            <div className="flex items-center justify-between border-t border-zinc-100 dark:border-white/5 pt-4">
-                                <div className="text-xs text-zinc-400 dark:text-zinc-500 flex items-center gap-2">
+                            <div className="flex items-center justify-between border-t border-zinc-100 dark:border-white/5 pt-4 relative z-10">
+                                <div className="text-xs text-zinc-400 dark:text-zinc-500 flex items-center gap-2 pointer-events-none">
                                     {project.password_hash && (
                                         <span title="Password Protected"><Lock className="h-3 w-3 text-purple-500" /></span>
                                     )}
