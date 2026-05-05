@@ -108,13 +108,12 @@ export function LandingContent() {
                                 <div className="w-10"></div> {/* Spacer for alignment */}
                             </div>
                             
-                            {/* Real Interactive Demo */}
-                            <div className="flex-1 w-full relative bg-background pointer-events-auto">
-                                {/* Invisible overlay to prevent scroll hijacking until clicked (optional, but good UX) */}
-                                <iframe 
-                                    src="/builder/demo" 
-                                    className="w-full h-full border-0 absolute inset-0"
-                                    title="CaseCraft Builder Interactive Demo"
+                            {/* Recorded Video Demo */}
+                            <div className="flex-1 w-full relative bg-zinc-900 pointer-events-none overflow-hidden flex items-center justify-center">
+                                <img 
+                                    src="/demo.webp" 
+                                    className="w-full h-full object-cover opacity-90"
+                                    alt="CaseCraft Builder Video Demo"
                                 />
                             </div>
                         </div>
