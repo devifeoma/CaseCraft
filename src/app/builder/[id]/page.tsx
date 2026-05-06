@@ -22,7 +22,7 @@ import {
     useSortable
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage, getProjectSections } from './actions'
+import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage, getProjectSections, saveProjectMeta } from './actions'
 
 type WizardStep = 'loading' | 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
 
@@ -443,12 +443,21 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const [isPublishModalOpen, setIsPublishModalOpen] = useState(false)
     const [isPro, setIsPro] = useState(false)
 
+    // Meta State
+    const [title, setTitle] = useState('Untitled Project')
+    const [subtitle, setSubtitle] = useState('CaseCraft Generated Case Study')
+
     useEffect(() => {
         const loadProjectData = async () => {
             if (isDemo) return
 
             try {
-                const { sections: dbSections } = await getProjectSections(projectId)
+                const { sections: dbSections, project } = await getProjectSections(projectId)
+                if (project) {
+                    if (project.title) setTitle(project.title)
+                    if (project.vibe) setSubtitle(project.vibe)
+                }
+
                 if (dbSections && dbSections.length > 0) {
                     setSections(dbSections)
                     setStep('done')
@@ -523,6 +532,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
     const handleSave = async () => {
         setIsSaving(true)
         try {
+            await saveProjectMeta(projectId, title, subtitle)
             await saveProjectSections(projectId, sections)
         } catch (e) {
             console.error(e)
@@ -728,9 +738,21 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
             {/* Main Storyline Canvas */}
             <main className="ml-64 mt-14 flex-1 p-8">
                 <div className="mx-auto max-w-2xl">
-                    <div className="mb-8 border-l-2 border-purple-500 pl-6">
-                        <h1 className="mb-2 text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white">Untitled Project</h1>
-                        <p className="text-zinc-600 dark:text-zinc-400">CaseCraft Generated Case Study</p>
+                    <div className="mb-8 border-l-2 border-purple-500 pl-6 flex flex-col gap-1">
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white bg-transparent outline-none w-full border-b border-transparent focus:border-purple-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                            placeholder="Project Title"
+                        />
+                        <input
+                            type="text"
+                            value={subtitle}
+                            onChange={(e) => setSubtitle(e.target.value)}
+                            className="text-zinc-600 dark:text-zinc-400 bg-transparent outline-none w-full border-b border-transparent focus:border-purple-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                            placeholder="Project Subtitle"
+                        />
                     </div>
 
                     <DndContext

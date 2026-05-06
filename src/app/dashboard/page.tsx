@@ -60,10 +60,10 @@ export default async function DashboardPage() {
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-8">
                     {projects.map((project) => (
                         <div key={project.id} className="group relative flex flex-col rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-zinc-900/50 p-6 shadow-sm transition-all hover:shadow-md hover:border-zinc-300 dark:hover:border-white/20">
-                            <Link href={`/builder/${project.id}`} className="absolute inset-0 z-0" aria-label={`Edit ${project.name || 'Untitled Project'}`} />
+                            <Link href={`/builder/${project.id}`} className="absolute inset-0 z-0" aria-label={`Edit ${project.title || 'Untitled Project'}`} />
                             <div className="mb-4 flex items-start justify-between relative z-10 pointer-events-none">
                                 <h3 className="text-lg font-semibold text-zinc-900 dark:text-white truncate pr-4">
-                                    {project.name || 'Untitled Project'}
+                                    {project.title || 'Untitled Project'}
                                 </h3>
                                 {project.is_published ? (
                                     <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-500/20 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-emerald-700 dark:text-emerald-400 uppercase">
@@ -77,7 +77,7 @@ export default async function DashboardPage() {
                             </div>
 
                             <p className="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2 mb-6 flex-1 relative z-10 pointer-events-none">
-                                {project.goal || 'No description available yet.'}
+                                {project.vibe || 'No description available yet.'}
                             </p>
 
                             <div className="flex items-center justify-between border-t border-zinc-100 dark:border-white/5 pt-4 relative z-10">

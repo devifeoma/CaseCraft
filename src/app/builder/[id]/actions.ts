@@ -211,7 +211,7 @@ export async function getProjectSections(projectId: string) {
   
   const { data: project, error: projError } = await supabase
     .from('projects')
-    .select('id')
+    .select('id, title, vibe')
     .eq('id', projectId)
     .single()
     
@@ -225,5 +225,22 @@ export async function getProjectSections(projectId: string) {
 
   if (secError) throw new Error(secError.message)
 
-  return { sections }
+  return { sections, project }
+}
+
+export async function saveProjectMeta(projectId: string, title: string, subtitle: string) {
+  if (projectId.includes('demo') || projectId.includes('mock')) return { success: true }
+  const supabase = await getSupabase()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error("Not authenticated")
+
+  const { error } = await supabase
+    .from('projects')
+    .update({ title, vibe: subtitle })
+    .eq('id', projectId)
+    .eq('user_id', user.id)
+
+  if (error) throw new Error("Failed to update project meta: " + error.message)
+  return { success: true }
 }
