@@ -7,7 +7,7 @@ export default async function LandingPage() {
   const { data: { user } } = await supabase.auth.getUser();
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground bg-grid-pattern selection:bg-brand-500/30 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+    <div className="relative min-h-screen bg-background text-foreground selection:bg-brand-500/30 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
       <LandingNav userEmail={user?.email} />
       <LandingContent userEmail={user?.email} />
     </div>

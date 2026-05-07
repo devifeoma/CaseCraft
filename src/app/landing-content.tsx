@@ -9,31 +9,10 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
     return (
         <div className="relative z-10 w-full flex flex-col items-center overflow-x-hidden">
             {/* Hero Section */}
-            <section className="relative w-full max-w-7xl mx-auto px-6 pt-40 pb-32 text-center flex flex-col items-center">
+            <section className="relative w-full max-w-7xl mx-auto px-6 pt-40 pb-32 text-center flex flex-col items-center bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_100%)]">
                 {/* Floating Elements Background */}
+                {/* Floating Elements Background Removed for Clarity */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
-                    <motion.div 
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 2, ease: "easeOut" }}
-                        className="absolute w-[800px] h-[400px] bg-blue-500/20 blur-[120px] rounded-[100%] mix-blend-screen"
-                    />
-                    <motion.div
-                        animate={{ 
-                            y: [-20, 20, -20],
-                            rotate: [0, 5, -5, 0]
-                        }}
-                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute right-[10%] top-[20%] w-64 h-64 bg-indigo-500/20 blur-[100px] rounded-full mix-blend-screen"
-                    />
-                    <motion.div
-                        animate={{ 
-                            y: [20, -20, 20],
-                            x: [-20, 20, -20]
-                        }}
-                        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute left-[10%] top-[40%] w-72 h-72 bg-blue-400/20 blur-[100px] rounded-full mix-blend-screen"
-                    />
                 </div>
 
                 <motion.div 
@@ -93,8 +72,8 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                     transition={{ duration: 1.2, delay: 0.4, type: "spring" }}
                     className="w-full max-w-5xl mt-24 relative z-10 perspective-[2000px]"
                 >
-                    <div className="rounded-2xl md:rounded-[2rem] border border-white/10 bg-white/5 p-2 md:p-4 shadow-2xl backdrop-blur-3xl overflow-hidden transform-gpu hover:-translate-y-2 transition-transform duration-500">
-                        <div className="aspect-[16/9] w-full rounded-xl md:rounded-[1.5rem] bg-zinc-900 overflow-hidden relative border border-white/5 shadow-inner flex flex-col">
+                    <div className="rounded-2xl md:rounded-[2rem] border border-white/20 bg-zinc-900/90 p-2 md:p-4 shadow-[0_0_80px_rgba(37,99,235,0.25)] overflow-hidden transform-gpu hover:-translate-y-2 transition-transform duration-500">
+                        <div className="aspect-[16/9] w-full rounded-xl md:rounded-[1.5rem] bg-black overflow-hidden relative border border-white/10 flex flex-col shadow-2xl">
                             {/* Browser Top Bar */}
                             <div className="w-full h-10 md:h-12 border-b border-white/5 bg-black flex items-center px-4 gap-2 flex-shrink-0 z-20">
                                 <div className="flex gap-1.5">
@@ -102,8 +81,8 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                                     <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500/80 border border-yellow-500"></div>
                                     <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500/80 border border-green-500"></div>
                                 </div>
-                                <div className="mx-auto px-4 py-1 rounded-md bg-white/5 text-[10px] md:text-xs text-white/60 font-mono flex items-center gap-2">
-                                    <Sparkles className="w-3 h-3" /> casecraft.app/builder/demo
+                                <div className="mx-auto px-4 py-1 rounded-md bg-white/10 text-[10px] md:text-xs text-white/90 font-mono flex items-center gap-2">
+                                    <Sparkles className="w-3 h-3 text-blue-400" /> casecraft.app/builder/demo
                                 </div>
                                 <div className="w-10"></div> {/* Spacer for alignment */}
                             </div>
@@ -112,7 +91,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                             <div className="flex-1 w-full relative bg-zinc-900 pointer-events-none overflow-hidden flex items-center justify-center">
                                 <img 
                                     src="/demo.webp" 
-                                    className="w-full h-full object-cover opacity-90"
+                                    className="w-full h-full object-cover brightness-110 contrast-110"
                                     alt="CaseCraft Builder Video Demo"
                                 />
                             </div>
@@ -215,7 +194,6 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
             {/* Massive CTA */}
             <section className="w-full border-t border-zinc-200/50 dark:border-white/5 bg-zinc-900 dark:bg-black py-32 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-64 bg-brand-500/30 blur-[120px] rounded-[100%] pointer-events-none"></div>
                 
                 <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
                     <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-6">Ready to stop explaining <br/> and start proving?</h2>
