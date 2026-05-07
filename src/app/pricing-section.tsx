@@ -97,11 +97,11 @@ export function PricingSection() {
                     {/* Pro Background Glow */}
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-500/20 blur-3xl rounded-full pointer-events-none"></div>
 
-                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-400"></div>
+                    <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400"></div>
 
                     <div className="mb-2 flex items-center justify-between">
                         <h3 className="text-xl font-medium text-zinc-900 dark:text-white">Pro Yearly</h3>
-                        <span className="inline-flex items-center rounded-full bg-brand-500/10 border border-brand-500/20 px-3 py-1 text-xs font-semibold text-brand-600 dark:text-brand-400">
+                        <span className="inline-flex items-center rounded-full bg-blue-500/10 border border-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-600 dark:text-blue-400">
                             Save 20%
                         </span>
                     </div>

@@ -31,7 +31,7 @@ export default async function DashboardPage() {
                 </div>
                 <Link
                     href="/new"
-                    className="hidden sm:flex h-10 items-center justify-center rounded-lg bg-purple-600 px-4 text-sm font-medium text-white transition-colors hover:bg-purple-500"
+                    className="hidden sm:flex h-10 items-center justify-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-500"
                 >
                     <Plus className="mr-2 h-4 w-4" />
                     New Project
@@ -83,7 +83,7 @@ export default async function DashboardPage() {
                             <div className="flex items-center justify-between border-t border-zinc-100 dark:border-white/5 pt-4 relative z-10">
                                 <div className="text-xs text-zinc-400 dark:text-zinc-500 flex items-center gap-2 pointer-events-none">
                                     {project.password_hash && (
-                                        <span title="Password Protected"><Lock className="h-3 w-3 text-purple-500" /></span>
+                                        <span title="Password Protected"><Lock className="h-3 w-3 text-blue-500" /></span>
                                     )}
                                     Updated {new Date(project.updated_at).toLocaleDateString()}
                                 </div>

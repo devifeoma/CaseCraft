@@ -13,7 +13,7 @@ export function LandingNav({ userEmail }: { userEmail?: string | null }) {
         <nav className="fixed top-0 w-full border-b border-zinc-200 bg-white/40 dark:border-white/5 dark:bg-black/40 backdrop-blur-xl z-50 transition-colors duration-300">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
                 <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 shadow-lg shadow-brand-500/20">
+                    <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 shadow-lg shadow-blue-500/20">
                         <Sparkles className="h-4 w-4 text-white" />
                         <div className="absolute inset-0 rounded-lg ring-1 ring-white/20"></div>
                     </div>
@@ -73,7 +73,7 @@ export function LandingNav({ userEmail }: { userEmail?: string | null }) {
                                             <Link
                                                 href="/dashboard/settings"
                                                 onClick={() => setIsProfileDropdownOpen(false)}
-                                                className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 hover:text-brand-700 dark:text-brand-400 dark:hover:bg-brand-500/10 dark:hover:text-brand-300 transition-colors"
+                                                className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:text-blue-400 dark:hover:bg-blue-500/10 dark:hover:text-blue-300 transition-colors"
                                             >
                                                 <span className="flex items-center gap-2"><Sparkles className="h-4 w-4" /> Upgrade to Pro</span>
                                                 <ArrowRight className="h-3 w-3 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />

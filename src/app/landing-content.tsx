@@ -16,7 +16,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 2, ease: "easeOut" }}
-                        className="absolute w-[800px] h-[400px] bg-brand-500/20 blur-[120px] rounded-[100%] mix-blend-screen"
+                        className="absolute w-[800px] h-[400px] bg-blue-500/20 blur-[120px] rounded-[100%] mix-blend-screen"
                     />
                     <motion.div
                         animate={{ 
@@ -24,7 +24,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                             rotate: [0, 5, -5, 0]
                         }}
                         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute right-[10%] top-[20%] w-64 h-64 bg-purple-500/20 blur-[100px] rounded-full mix-blend-screen"
+                        className="absolute right-[10%] top-[20%] w-64 h-64 bg-indigo-500/20 blur-[100px] rounded-full mix-blend-screen"
                     />
                     <motion.div
                         animate={{ 
@@ -32,7 +32,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                             x: [-20, 20, -20]
                         }}
                         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute left-[10%] top-[40%] w-72 h-72 bg-cyan-500/20 blur-[100px] rounded-full mix-blend-screen"
+                        className="absolute left-[10%] top-[40%] w-72 h-72 bg-blue-400/20 blur-[100px] rounded-full mix-blend-screen"
                     />
                 </div>
 
@@ -221,7 +221,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                     <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-6">Ready to stop explaining <br/> and start proving?</h2>
                     <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-2xl">Join the thousands of designers using CaseCraft to build high-converting portfolios that speak for themselves.</p>
                     <Link href={userEmail ? "/dashboard" : "/login?signup=true"} className="relative group overflow-hidden rounded-full p-[1px] inline-flex">
-                        <span className="absolute inset-0 bg-gradient-to-r from-brand-500 via-purple-500 to-cyan-400 animate-pulse rounded-full"></span>
+                        <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400 animate-pulse rounded-full"></span>
                         <div className="relative bg-zinc-950 px-10 py-4 rounded-full flex items-center justify-center gap-2 group-hover:bg-zinc-900 transition-colors">
                             <span className="text-lg font-medium text-white">{userEmail ? "Go to Dashboard" : "Build your first project"}</span>
                             <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
@@ -234,7 +234,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
             <footer className="w-full border-t border-zinc-200 dark:border-white/5 bg-background pt-12 pb-8 flex flex-col items-center z-10">
                 <div className="w-full max-w-7xl px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-zinc-500 transition-colors duration-300">
                     <div className="flex items-center gap-2 font-medium">
-                        <div className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-brand-500 to-indigo-600 shadow-sm">
+                        <div className="flex h-6 w-6 items-center justify-center rounded bg-gradient-to-br from-blue-600 to-blue-400 shadow-sm">
                             <Sparkles className="h-3 w-3 text-white" />
                         </div>
                         © 2026 CaseCraft, Inc.

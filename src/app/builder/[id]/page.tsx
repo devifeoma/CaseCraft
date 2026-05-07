@@ -23,6 +23,8 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { saveProjectSections, publishProject, checkIsPro, uploadProjectImage, getProjectSections, saveProjectMeta } from './actions'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 type WizardStep = 'loading' | 'goal' | 'constraints' | 'outcome' | 'generating' | 'done'
 
@@ -109,8 +111,15 @@ function EditableMarkdown({ initialValue, onChange }: { initialValue: string, on
         <div
             onClick={() => setIsEditing(true)}
             className="prose max-w-none prose-headings:font-medium text-zinc-700 dark:prose-invert dark:text-zinc-300 cursor-text hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors min-h-[200px] -m-2 p-2 ring-1 ring-transparent hover:ring-zinc-200 dark:hover:ring-white/10"
-            dangerouslySetInnerHTML={{ __html: value ? value.replace(/\n\n/g, '<br/><br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/^# (.*$)/gim, '<h1 class="font-bold text-2xl mt-4 mb-2">$1</h1>') : '<span class="text-zinc-400">Click to add text...</span>' }}
-        />
+        >
+            {value ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {value}
+                </ReactMarkdown>
+            ) : (
+                <span className="text-zinc-400">Click to add text...</span>
+            )}
+        </div>
     )
 }
 
@@ -563,7 +572,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
         return (
             <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background text-foreground p-6 transition-colors duration-300 relative">
                 <Link href="/dashboard" className="absolute top-6 left-6 flex items-center gap-3 hover:opacity-80 transition-opacity">
-                    <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-indigo-600 shadow-lg shadow-brand-500/20">
+                    <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 shadow-lg shadow-blue-500/20">
                         <Sparkles className="h-4 w-4 text-white" />
                         <div className="absolute inset-0 rounded-lg ring-1 ring-white/20"></div>
                     </div>
@@ -572,7 +581,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
 
                 {step === 'loading' ? (
                     <div className="flex flex-col items-center gap-4 animate-in fade-in">
-                        <Sparkles className="h-8 w-8 animate-pulse text-purple-500" />
+                        <Sparkles className="h-8 w-8 animate-pulse text-blue-500" />
                         <p className="text-sm font-medium text-zinc-500">Loading project...</p>
                     </div>
                 ) : (
@@ -600,7 +609,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                 <h2 className="mb-2 text-2xl font-semibold text-zinc-900 dark:text-white">What was the primary goal?</h2>
                                 <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">Briefly explain what you set out to achieve with this project.</p>
                                 <textarea
-                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-purple-500/50 transition-colors"
+                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-blue-500/50 transition-colors"
                                     placeholder="e.g., Redesign the onboarding flow to reduce drop-off rates..."
                                     value={goal}
                                     onChange={(e) => setGoal(e.target.value)}
@@ -620,7 +629,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                 <h2 className="mb-2 text-2xl font-semibold text-zinc-900 dark:text-white">Any constraints?</h2>
                                 <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">What held you back? Time? Legacy tech? Budget?</p>
                                 <textarea
-                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-purple-500/50 transition-colors"
+                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-blue-500/50 transition-colors"
                                     placeholder="e.g., We had a 2-week deadline and couldn't touch the backend API..."
                                     value={constraints}
                                     onChange={(e) => setConstraints(e.target.value)}
@@ -645,7 +654,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                                 <h2 className="mb-2 text-2xl font-semibold text-zinc-900 dark:text-white">What was the outcome?</h2>
                                 <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">Brag a little. What impact did your design have?</p>
                                 <textarea
-                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-purple-500/50 transition-colors"
+                                    className="mb-6 min-h-[120px] w-full resize-none rounded-xl border border-zinc-200 dark:border-white/10 bg-zinc-50 dark:bg-black/50 p-4 text-zinc-900 dark:text-white outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:border-blue-500/50 transition-colors"
                                     placeholder="e.g., Conversion increased by 14% and support tickets dropped by half."
                                     value={outcome}
                                     onChange={(e) => setOutcome(e.target.value)}
@@ -667,8 +676,8 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
 
                         {step === 'generating' && (
                             <div className="flex flex-col items-center justify-center py-12 text-center animate-in fade-in">
-                                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-purple-500/10">
-                                    <Sparkles className="h-8 w-8 animate-pulse text-purple-600 dark:text-purple-400" />
+                                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-500/10">
+                                    <Sparkles className="h-8 w-8 animate-pulse text-blue-600 dark:text-blue-400" />
                                 </div>
                                 <h2 className="mb-2 text-xl font-medium text-zinc-900 dark:text-white">Crafting your narrative...</h2>
                                 <p className="max-w-xs text-sm text-zinc-600 dark:text-zinc-400">Our AI agent is formatting your inputs into a professional case study structure.</p>
@@ -707,6 +716,12 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
             <aside className="fixed bottom-0 left-0 top-14 w-64 border-r border-zinc-200 bg-zinc-50/50 p-4 backdrop-blur-md overflow-y-auto dark:border-white/5 dark:bg-black/50">
                 <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">Extracted Assets</h3>
                 <div className="flex flex-col gap-3 mb-8">
+                    <div onClick={() => addSection('ai_text')} className="group cursor-pointer rounded-lg border border-white/5 bg-white/5 p-2 hover:border-white/20 transition-colors">
+                        <div className="h-24 w-full rounded bg-zinc-800 mb-2 flex flex-col items-center justify-center text-zinc-600">
+                            + Add Text
+                        </div>
+                        <p className="text-xs font-medium text-zinc-400 group-hover:text-white">Narrative Text Block</p>
+                    </div>
                     <div onClick={() => addSection('figma_image')} className="group cursor-pointer rounded-lg border border-white/5 bg-white/5 p-2 hover:border-white/20 transition-colors">
                         <div className="h-24 w-full rounded bg-zinc-800 mb-2 flex flex-col items-center justify-center text-zinc-600">
                             + Add Image
@@ -738,19 +753,19 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
             {/* Main Storyline Canvas */}
             <main className="ml-64 mt-14 flex-1 p-8">
                 <div className="mx-auto max-w-2xl">
-                    <div className="mb-8 border-l-2 border-purple-500 pl-6 flex flex-col gap-1">
+                    <div className="mb-8 border-l-2 border-blue-500 pl-6 flex flex-col gap-1">
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white bg-transparent outline-none w-full border-b border-transparent focus:border-purple-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                            className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white bg-transparent outline-none w-full border-b border-transparent focus:border-blue-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                             placeholder="Project Title"
                         />
                         <input
                             type="text"
                             value={subtitle}
                             onChange={(e) => setSubtitle(e.target.value)}
-                            className="text-zinc-600 dark:text-zinc-400 bg-transparent outline-none w-full border-b border-transparent focus:border-purple-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
+                            className="text-zinc-600 dark:text-zinc-400 bg-transparent outline-none w-full border-b border-transparent focus:border-blue-500/30 transition-colors placeholder:text-zinc-300 dark:placeholder:text-zinc-700"
                             placeholder="Project Subtitle"
                         />
                     </div>

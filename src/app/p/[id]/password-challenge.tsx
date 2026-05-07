@@ -29,10 +29,10 @@ export function PasswordChallenge({ projectId }: { projectId: string }) {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black p-4 selection:bg-purple-500/30">
+        <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black p-4 selection:bg-blue-500/30">
             <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-8 flex justify-center">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-indigo-600 shadow-lg shadow-purple-500/20">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-400 shadow-lg shadow-blue-500/20">
                         <Lock className="h-6 w-6 text-white" />
                     </div>
                 </div>
@@ -52,7 +52,7 @@ export function PasswordChallenge({ projectId }: { projectId: string }) {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Enter password"
-                                className="w-full rounded-xl border border-zinc-300 dark:border-white/10 bg-zinc-50 dark:bg-black/50 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all font-medium"
+                                className="w-full rounded-xl border border-zinc-300 dark:border-white/10 bg-zinc-50 dark:bg-black/50 px-4 py-3 text-sm text-zinc-900 dark:text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all font-medium"
                                 autoFocus
                             />
                             {error && (
@@ -63,7 +63,7 @@ export function PasswordChallenge({ projectId }: { projectId: string }) {
                         <button
                             type="submit"
                             disabled={isLoading || !password}
-                            className="group flex w-full items-center justify-center rounded-xl bg-purple-600 px-4 py-3 text-sm font-medium text-white shadow-md transition-all hover:bg-purple-700 disabled:opacity-50"
+                            className="group flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-medium text-white shadow-md transition-all hover:bg-blue-700 disabled:opacity-50"
                         >
                             {isLoading ? 'Verifying...' : 'Unlock Case Study'}
                             {!isLoading && <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />}
