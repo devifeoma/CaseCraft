@@ -94,8 +94,6 @@ export function PricingSection() {
 
                 {/* Pro Yearly Tier */}
                 <div className="glass-panel relative flex flex-col h-full p-8 border-brand-500/30 overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.15)] md:scale-105 z-10">
-                    {/* Pro Background Glow */}
-                    <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-brand-500/20 blur-3xl rounded-full pointer-events-none"></div>
 
                     <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-sky-400"></div>
 

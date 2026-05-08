@@ -9,7 +9,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
     return (
         <div className="relative z-10 w-full flex flex-col items-center overflow-x-hidden">
             {/* Hero Section */}
-            <section className="relative w-full max-w-7xl mx-auto px-6 pt-40 pb-32 text-center flex flex-col items-center bg-grid-pattern [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_100%)]">
+            <section className="relative w-full max-w-7xl mx-auto px-6 pt-40 pb-32 text-center flex flex-col items-center bg-grid-pattern">
                 {/* Floating Elements Background */}
                 {/* Floating Elements Background Removed for Clarity */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden flex items-center justify-center">
@@ -35,7 +35,7 @@ export function LandingContent({ userEmail }: { userEmail?: string | null }) {
                     className="mb-8 text-6xl md:text-8xl font-semibold tracking-tighter text-zinc-900 dark:text-white leading-[1.05] relative z-10 max-w-5xl"
                 >
                     Build portfolios that <br className="hidden sm:block" />
-                    <span className="aurora-gradient drop-shadow-lg pb-2">
+                    <span className="brand-gradient pb-2">
                         actually get you hired.
                     </span>
                 </motion.h1>
